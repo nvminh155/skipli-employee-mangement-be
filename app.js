@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 var express = require("express");
 var app = express();
 
