@@ -66,7 +66,8 @@ const validateAccessCode = async (req, res) => {
         role:
           role === roleModel.definedRoles.MANAGER
             ? roleModel.definedRoles.MANAGER
-            : roleModel.definedRoles.EMPLOYEE,
+            : "",
+        status: userModel.definedStatus.ACTIVE,
         uuid: uuid,
       };
       await userModel.createUser(userObj);
