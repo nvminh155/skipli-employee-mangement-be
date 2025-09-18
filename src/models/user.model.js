@@ -12,8 +12,26 @@ const { config } = require("../config");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
+const definedStatus = {
+  ACTIVE: "active",
+  INACTIVE: "inactive",
+  PENDING: "pending",
+};
+
 const userModel = {
-  async createUser({ phoneNumber, fullName, email, password, role, uuid }) {
+  definedStatus,
+
+  createEmployee: async (employee) => {
+    const employeeRef = doc(db, "users", employee.id);
+    await setDoc(employeeRef, {
+      ...employee,
+      status: definedStatus.PENDING,
+      username: "",
+      password: "",
+    });
+  },
+
+  async createUser({ phoneNumber, fullName, email, password, status, role, uuid }) {
     try {
       const userRef = doc(db, "users", uuid);
       const user = {
@@ -22,6 +40,7 @@ const userModel = {
         email,
         password,
         role,
+        status: status ?? definedStatus.PENDING,
         id: uuid,
       };
       await setDoc(userRef, user);
