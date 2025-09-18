@@ -1,4 +1,6 @@
 const { Router } = require("express");
+const { authRouter } = require("./auth.route");
+
 const router = Router();
 
 router.get("/test", (req, res) => {
