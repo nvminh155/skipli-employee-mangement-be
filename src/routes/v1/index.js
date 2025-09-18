@@ -1,12 +1,9 @@
 const { Router } = require("express");
-const { authRouter } = require("./auth.route");
 
 const router = Router();
 
 router.get("/test", (req, res) => {
   res.status(200).json({ message: "Hello World" });
 });
-
-router.use("/auth", authRouter);
 
 module.exports = { routerV1: router };
