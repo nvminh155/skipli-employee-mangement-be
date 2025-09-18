@@ -16,6 +16,7 @@ const setupAccount = async (req, res) => {
     const updateData = {
       username,
       password: await userModel.hashPassword(password),
+      status: userModel.definedStatus.ACTIVE,
     };
 
     await updateDoc(doc(db, "users", user.id), updateData);
