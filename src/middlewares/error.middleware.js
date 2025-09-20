@@ -1,12 +1,10 @@
-
-
-
 module.exports = async function errorMiddleware(err, req, res, next) {
   try {
     const statusCode = err.statusCode || 500;
-    const message = err.message || ERROR_HELPER.getMessage(ErrorKey.INTERNAL_SERVER_ERROR);
+    const message =
+      err.message || ERROR_HELPER.getMessage(ErrorKey.INTERNAL_SERVER_ERROR);
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV !== "production") {
       console.error(err);
     }
 
@@ -15,13 +13,13 @@ module.exports = async function errorMiddleware(err, req, res, next) {
       data: null,
       error: {
         message,
-        statusCode
-      }
+        statusCode,
+      },
     });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error(errObj);
+    if (process.env.NODE_ENV !== "production") {
+      console.error(error);
     }
     next(error);
   }
-}
+};
