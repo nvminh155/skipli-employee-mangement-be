@@ -13,5 +13,5 @@ router.get("/test", (req, res) => {
 router.use("/auth", authRouter);
 router.use("/profile", authMiddleware, profileRouter);
 router.use("/employees", authMiddleware, managerMiddleware, employeeRouter);
-router.use("/tasks", taskRouter);
+router.use("/tasks",authMiddleware, taskRouter);
 module.exports = { routerV1: router };
