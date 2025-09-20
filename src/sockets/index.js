@@ -20,7 +20,7 @@ module.exports = function (io) {
     });
 
     // console.log("yours rooms = ", rooms)
-
+    socket.emit("rooms", rooms);
     chatChannel(socket, io.of("/chat"));
   });
 };
