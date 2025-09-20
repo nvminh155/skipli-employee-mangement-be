@@ -48,6 +48,14 @@ const userModel = {
       throw error;
     }
   },
+  async getUserById(id) {
+    const userRef = doc(db, "users", id);
+    const snap = await getDoc(userRef);
+    if (snap.empty) {
+      return null;
+    }
+    return snap.data();
+  },
   async getUserByEmail(email) {
     const userRef = collection(db, "users");
     const q = query(userRef, where("email", "==", email));
