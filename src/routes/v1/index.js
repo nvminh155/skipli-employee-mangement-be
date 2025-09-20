@@ -3,11 +3,13 @@ const router = Router();
 const { authRouter } = require("./auth.route");
 const { profileRouter } = require("./profile.route");
 const { employeeRouter } = require("./employee.route");
+const authMiddleware = require("../../middlewares/auth.middleware");
+const managerMiddleware = require("../../middlewares/manager.middleware");
 
 router.get("/test", (req, res) => {
   res.status(200).json({ message: "Hello World" });
 });
 router.use("/auth", authRouter);
-router.use("/profile", profileRouter);
-router.use("/employees", employeeRouter);
+router.use("/profile", authMiddleware, profileRouter);
+router.use("/employees", authMiddleware, managerMiddleware, employeeRouter);
 module.exports = { routerV1: router };

@@ -34,8 +34,18 @@ const ERR_MESS = {
     statusCode: 500,
     message: "Internal server error",
   },
-}
+  UNAUTHORIZED: {
+    key: "UNAUTHORIZED",
+    statusCode: 401,
+    message: "Unauthorized",
+  },
+  LIMIT_PERMISSION: {
+    key: "LIMIT_PERMISSION",
+    statusCode: 403,
+    message: "Limit permission",
+  },
+};
 
 module.exports = {
-  ERR_MESS
-}
+  ERR_MESS,
+};
