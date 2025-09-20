@@ -28,15 +28,15 @@ const createTask = async (req, res) => {
       labels,
       estimate,
       env,
-      user_id
+      assignedTo,
     } = req.body;
 
     if (!title) {
       throw createHttpErr(ERR_MESS.MISSING_DATA.key, "Title is required");
     }
 
-    if (user_id) {
-      const user = await userModel.getUser(user_id);
+    if (assignedTo) {
+      const user = await userModel.getUserById(assignedTo);
       if (!user) {
         throw createHttpErr(ERR_MESS.DATA_NOT_FOUND.key, "User not found");
       }
@@ -64,7 +64,7 @@ const createTask = async (req, res) => {
       labels: labels ?? [],
       estimate: estimate ?? "",
       env: env ?? "",
-      assignedTo: user_id ?? "",
+      assignedTo: assignedTo ?? "",
       assignedBy: req.user.id ?? "",
       status: taskModel.definedStatus.READY,
     };
@@ -147,10 +147,20 @@ const getTaskById = async (req, res) => {
       throw createHttpErr(ERR_MESS.DATA_NOT_FOUND.key, "Task not found");
     }
     const data = task.data();
+    const assignedTo = data.assignedTo
+      ? await userModel.getUserById(data.assignedTo)
+      : null;
+    const assignedBy = data.assignedBy
+      ? await userModel.getUserById(data.assignedBy)
+      : null;
 
     res.status(200).json({
       message: "Task found",
-      data,
+      data: {
+        ...data,
+        assignedTo,
+        assignedBy,
+      },
       success: true,
     });
   } catch (error) {
@@ -165,7 +175,12 @@ const updateTask = async (req, res) => {
     if (!task?.title) {
       throw createHttpErr(ERR_MESS.MISSING_DATA.key, "Title is required");
     }
-
+    if (task?.assignedTo) {
+      const user = await userModel.getUserById(task.assignedTo);
+      if (!user) {
+        throw createHttpErr(ERR_MESS.DATA_NOT_FOUND.key, "User not found");
+      }
+    }
     const docRef = doc(db, "tasks", id);
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -175,6 +190,7 @@ const updateTask = async (req, res) => {
     const updatedData = {
       ...data,
       ...task,
+      updatedBy: req.user.id,
     };
     await updateDoc(docRef, updatedData);
 
