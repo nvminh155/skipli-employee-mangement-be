@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { createEmployee, getEmployeeById, updateEmployee, deleteEmployee, getEmployees} = require("../../controllers/employee.controller");
+const authMiddleware = require("../../middlewares/auth.middleware");
 
 const router = Router();
 
