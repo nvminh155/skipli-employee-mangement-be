@@ -7,6 +7,7 @@ const {
   query,
   updateDoc,
   collection,
+  orderBy,
 } = require("firebase/firestore");
 const { db } = require("../firebase");
 const { v4: uuidv4 } = require("uuid");
@@ -25,6 +26,7 @@ const conversationModel = {
     await setDoc(messageRef, {
       ...message,
       conversationId: message.conversationId,
+      createdAt: Date.now(),
     });
 
     const conversationRef = doc(db, "conversations", message.conversationId);
@@ -60,6 +62,33 @@ const conversationModel = {
     const conversations = await Promise.all(promise);
 
     return conversations;
+  },
+  getMessages: async (conversationId) => {
+    const q = query(
+      collection(db, "conversations", conversationId, "messages"),
+      orderBy("createdAt", "asc")
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      return [];
+    }
+
+    const promise = snap.docs.map(async (doc) => {
+      const data = doc.data();
+      const fromMemberId = data.from;
+      const fromMemberData = await userModel.getUserById(fromMemberId);
+
+      const toMemberId = data.to;
+      const toMemberData = await userModel.getUserById(toMemberId);
+
+      return {
+        ...data,
+        from: fromMemberData,
+        to: toMemberData,
+      };
+    });
+    const messages = await Promise.all(promise);
+    return messages;
   },
 };
 
