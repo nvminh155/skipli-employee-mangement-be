@@ -16,10 +16,8 @@ const { ERR_MESS } = require("../constants");
 const createNewAccessCode = async (req, res) => {
   try {
     const { email } = req.body;
-    //generate 6 digit
     const code = Math.floor(100000 + Math.random() * 900000);
 
-    //save to firebase
     const docRef = doc(db, "validate", email);
     await setDoc(docRef, {
       code,
