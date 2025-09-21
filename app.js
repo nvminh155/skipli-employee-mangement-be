@@ -5,11 +5,20 @@ var express = require("express");
 const { config } = require("./src/config");
 const { routerV1 } = require("./src/routes/v1");
 const errorMiddleware = require("./src/middlewares/error.middleware");
+const cors = require("cors");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+});
+
+app.use(cors({
+  origin: "http://localhost:3000",
+}));
 
 app.use(express.json());
 
