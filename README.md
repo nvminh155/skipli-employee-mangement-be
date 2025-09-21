@@ -1,17 +1,17 @@
 ## PROJECT STRUCTURE
 
-config: config of the app
-constants: some variables to strict hard code
-controllers: containing logic handle the requests
-firebase: config firebase
-lib: some custom library or library
-middlewares: to check & handle jwt, auth, role
-models: business logic
-routes: defined the route of the endpoint
-services: some another service through third party
-sockets: handle socket channel (namespace)
-utils: some utilities
-.env.example: guid env
+config: config of the app  
+constants: some variables to strict hard code  
+controllers: containing logic handle the requests  
+firebase: config firebase  
+lib: some custom library or library  
+middlewares: to check & handle jwt, auth, role  
+models: business logic  
+routes: defined the route of the endpoint  
+services: some another service through third party  
+sockets: handle socket channel (namespace)  
+utils: some utilities  
+.env.example: guid env  
 
 
 ## HOW TO RUN
