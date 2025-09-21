@@ -16,7 +16,7 @@ const {
 } = require("firebase/firestore");
 const { db } = require("../firebase");
 const { roleModel } = require("../models/role.model");
-const { compareIgnoreCase } = require("../utils/stringHelper");
+const { compareIgnoreCase, includeIgnoreCase } = require("../utils/stringHelper");
 
 const getEmployees = async (req, res) => {
   try {
@@ -46,8 +46,8 @@ const getEmployees = async (req, res) => {
 
         if (filters.keyword)
           isMatchKeyword =
-            compareIgnoreCase(employee.fullName, filters.keyword) ||
-            compareIgnoreCase(employee.email, filters.keyword);
+            includeIgnoreCase(employee.fullName, filters.keyword) ||
+            includeIgnoreCase(employee.email, filters.keyword);
         if (filters.status) isMatchStatus = employee.status === filters.status;
 
         return isMatchKeyword && isMatchStatus;
@@ -56,7 +56,7 @@ const getEmployees = async (req, res) => {
     res.status(200).json({
       message: "Employees found",
       data: {
-        employees: data,
+        result: data,
         pagination: {
           total: docSnap.docs.length,
           page,
